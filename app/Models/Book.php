@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     use HasFactory;
+
+    public function review()
+    {
+        return $this->hasMany(Review::class);
+    }
+    // the above function is needed to define one to many relationship
+    // book has many reviews
 }
