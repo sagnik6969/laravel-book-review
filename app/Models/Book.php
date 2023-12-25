@@ -13,9 +13,21 @@ class Book extends Model
     // Custom query function can be chained with query builders
     public function scopeTitle(Builder $query, string $title): Builder
     {
-
         return $query->where('title', 'LIKE', '%' . $title . '%');
+    }
 
+    public function scopePopular(Builder $query): Builder
+    {
+        return $query
+            ->withCount('reviews')
+            ->orderBy('reviews_count', 'DESC');
+    }
+
+    public function scopeHighestRated(Builder $query): Builder
+    {
+        return $query
+            ->withAvg('reviews', 'rating')
+            ->orderBy('reviews_avg_rating', 'DESC');
     }
 
 

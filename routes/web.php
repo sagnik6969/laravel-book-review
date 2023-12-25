@@ -38,4 +38,12 @@ Route::get('/', function () {
     // App\Models\Book::withCount('reviews')->having('reviews_count','>=','10')->withAvg('reviews','rating')->orderBy('reviews_avg_rating'
     // ,'desc')->limit(4)->get()
 
+
+    // => The order in which you call the query builder functions does not matter.
+    // => but it is not always the case if you use order by the first order by takes precedence over 2nd order by.
+    // App\Models\Book::popular()->highestRated()
+    // popular(), highestRated() => are custom query builder functions
+
+
+
 });
