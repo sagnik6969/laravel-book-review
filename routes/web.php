@@ -16,13 +16,26 @@ use \App\Models\Book;
 use \App\Models\Review;
 
 Route::get('/', function () {
-    // Book::where('title','LIKE','%qui%')->get();
-    // middle argument is operator
-    // write `->toSql()`in place of get to get the sql query
+    // to get books with review count
+    // App\Models\Book::withCount('reviews')->get();
 
-    // we can also add custom filters like where, take
-    // the custom filter is defined in Book.php
-    // Book::title('qui')->get(); 
-    // Book::title('qui')->where('created_at','>','2023-9-01')->get();        
-    // local query scopes can be chained with other filters()
+    // to get most recent 3 books with review count
+    // Book::withCount('reviews')->latest()->limit(3)->get(); 
+    // limit works on query builders
+    // take works on both query builders and laravel collections
+    // in case of query builders take is just alias to limit 
+
+
+    // order in which you call different query builder 
+    //methods does not matter (** important)
+    // Book::where('id',2)->take
+
+    // To get books with highest average rating
+    // Book::withAvg('reviews','rating')->orderBy('reviews_avg_rating','desc')->limit(5)->get();
+    // Book::withCount('reviews')->having('reviews_count','>=','10')->withAvg('reviews','rating')->orderBy('reviews_avg_rating'
+    
+    // To find the Books with max rating which has at least 10 reviews 
+    // App\Models\Book::withCount('reviews')->having('reviews_count','>=','10')->withAvg('reviews','rating')->orderBy('reviews_avg_rating'
+    // ,'desc')->limit(4)->get()
+
 });
