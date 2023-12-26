@@ -16,10 +16,22 @@ class Book extends Model
         return $query->where('title', 'LIKE', '%' . $title . '%');
     }
 
-    public function scopePopular(Builder $query): Builder
+    public function scopePopular(Builder $query, $from = null, $to = null): Builder
     {
         return $query
-            ->withCount('reviews')
+            ->withCount([
+                'reviews' => function (Builder $q) use ($from, $to) {
+                    // To filter the reviews
+                    // ** the books will be shown with the review count between from and to
+                    if ($from && !$to)
+                        $q->where('created_at', '>=', $from);
+                    else if (!$from && $to)
+                        $q->where('created_at', '<=', $to);
+                    else if ($from && $to)
+                        $q->whereNotBetween('created_at', [$from, $to]);
+
+                }
+            ])
             ->orderBy('reviews_count', 'DESC');
     }
 
