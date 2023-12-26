@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use Illuminate\Http\Request;
 
 // php artisan make:controller BookController --resource => this command is used to create this file
@@ -13,6 +14,10 @@ class BookController extends Controller
      */
     public function index()
     {
+        $books = Book::withAvg('reviews', 'rating')->withCount('reviews')->paginate(5);
+        return view('index', [
+            'books' => $books
+        ]);
         //
     }
 
