@@ -16,5 +16,7 @@ use \App\Models\Book;
 use \App\Models\Review;
 
 Route::get('/', function () {
- \App\Models\Book::popular('2023-01-01');
+
+    
+
 });

@@ -20,26 +20,43 @@ class Book extends Model
     {
         return $query
             ->withCount([
-                'reviews' => function (Builder $q) use ($from, $to) {
-                    // To filter the reviews
-                    // ** the books will be shown with the review count between from and to
-                    if ($from && !$to)
-                        $q->where('created_at', '>=', $from);
-                    else if (!$from && $to)
-                        $q->where('created_at', '<=', $to);
-                    else if ($from && $to)
-                        $q->whereNotBetween('created_at', [$from, $to]);
-
-                }
+                'reviews' =>
+                    fn(Builder $q) => $this->dateRangeFilter($q, $from, $to)
+                // The above is an example of arrow function.
+                // arrow function do not need to use 'use' keyword.
+                // arrow function can have only 1 expression.
             ])
             ->orderBy('reviews_count', 'DESC');
     }
 
-    public function scopeHighestRated(Builder $query): Builder
+    public function scopeHighestRated(Builder $query, $from = null, $to = null): Builder
     {
         return $query
-            ->withAvg('reviews', 'rating')
+            ->withAvg([
+                'reviews' =>
+                    fn(Builder $q) => $this->dateRangeFilter($q, $from, $to)
+            ], 'rating')
             ->orderBy('reviews_avg_rating', 'DESC');
+    }
+
+    private function dateRangeFilter(Builder $query, $from = null, $to = null)
+    {
+        if ($from && !$to)
+            $query->where('created_at', '>=', $from);
+        else if (!$from && $to)
+            $query->where('created_at', '<=', $to);
+        else if ($from && $to)
+            $query->whereNotBetween('created_at', [$from, $to]);
+
+            // The method doesn't return anything explicitly because it modifies 
+            // the query directly. In Laravel, queries are modified by reference, 
+            // so you can modify the original query inside the method.
+    }
+
+    public function scopeMinReviews(Builder $query, int $minReview): Builder
+    {
+        // filters the books which has reviews >= $minReview
+        return $query->having('reviews_count', '>=', $minReview);
     }
 
 
