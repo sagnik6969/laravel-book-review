@@ -12,13 +12,24 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::withAvg('reviews', 'rating')->withCount('reviews')->paginate(5);
+        $title = $request->input('title');
+        // The when method will execute the given callback 
+        // when the first argument given to the method evaluates 
+        // to true.
+
+        $books = Book::when(
+            $title, function ($query, $title) {
+                $query->title($title);
+            }
+            // title is a custom filter defined in Book model
+        )
+            ->withAvg('reviews', 'rating')->withCount('reviews')->paginate(5);
+
         return view('index', [
             'books' => $books
         ]);
-        //
     }
 
     /**

@@ -3,6 +3,17 @@
 
 @section('content')
     <h2>Books</h2>
+
+    <form action="">
+        <div class="form-inline">
+            <input class="form-control mr-2" type="text" name="title" placeholder="Search by title"
+                value="{{ request('title') }}">
+            {{-- request('title') => to get old value of title --}}
+            <button class="form-control btn btn-outline-primary mr-2">Search</button>
+            <a class="btn btn-outline-secondary form-control" href="{{ route('books.index') }}">Reset</a>
+        </div>
+    </form>
+
     @forelse ($books as $book)
         <div class="card mt-3">
             <div class="card-body d-flex justify-content-between align-items-center">
@@ -26,4 +37,7 @@
             </div>
         </div>
     @endforelse
+    <div class="mt-5">
+        {{ $books->links('pagination::bootstrap-4') }}
+    </div>
 @endsection

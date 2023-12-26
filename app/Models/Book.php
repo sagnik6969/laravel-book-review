@@ -48,9 +48,9 @@ class Book extends Model
         else if ($from && $to)
             $query->whereNotBetween('created_at', [$from, $to]);
 
-            // The method doesn't return anything explicitly because it modifies 
-            // the query directly. In Laravel, queries are modified by reference, 
-            // so you can modify the original query inside the method.
+        // The method doesn't return anything explicitly because it modifies 
+        // the query directly. In Laravel, queries are modified by reference, 
+        // so you can modify the original query inside the method.
     }
 
     public function scopeMinReviews(Builder $query, int $minReview): Builder
@@ -67,3 +67,7 @@ class Book extends Model
     // the above function is needed to define one to many relationship
     // book has many reviews
 }
+
+// custom Query builders in models need not to return anything 
+// but it is considered a good proactive to return an instance of query builder
+// good for intellisense
