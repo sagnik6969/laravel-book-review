@@ -15,6 +15,10 @@ class BookController extends Controller
     public function index(Request $request)
     {
         $title = $request->input('title');
+        $filter = $request->input('filter', '') ?? '';
+
+
+
         // The when method will execute the given callback 
         // when the first argument given to the method evaluates 
         // to true.
@@ -24,8 +28,21 @@ class BookController extends Controller
                 $query->title($title);
             }
             // title is a custom filter defined in Book model
-        )
-            ->withAvg('reviews', 'rating')->withCount('reviews')->paginate(5);
+        );
+        // ->withAvg('reviews', 'rating')->withCount('reviews')->paginate(5);
+
+        $books = match ($filter) {
+            '' => $books->withCount('reviews')->withAvg('reviews', 'rating')->latest(),
+            'popular_last_month' => $books->popularLastMonth(),
+            'popular_last_6months' => $books->popularLast6Months(),
+            'highest_rated_last_month' => $books->highestRatedLastMonth(),
+            'highest_rated_last_6months' => $books->highestRatedLast6Months(),
+            'default' => $books->withCount('reviews')->withAvg('reviews', 'rating')->latest(),
+        };
+
+        // Expression 'match' is a short syntax for 'switch' that does not have 'break' or 'return'.
+
+        $books = $books->paginate();
 
         return view('index', [
             'books' => $books

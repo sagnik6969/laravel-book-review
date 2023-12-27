@@ -6,7 +6,7 @@
 
     <form action="">
         <div class="form-inline">
-            <input class="form-control mr-2" type="text" name="title" placeholder="Search by title"
+            <input class="form-control search-box mr-2" type="text" name="title" placeholder="Search by title"
                 value="{{ request('title') }}">
             <input type="hidden" name="filter" value="{{ request('filter') }}">
             {{-- request('title') => to get old value of title --}}
@@ -51,7 +51,7 @@
                     <h6 class="card-subtitle mb-2 text-muted">By {{ $book->author }}</h6>
                 </div>
                 <div>
-                    <h5 class="mb-0">{{ round($book->reviews_avg_rating, 1) }}</h5>
+                    <h5 class="mb-0">{{ number_format($book->reviews_avg_rating, 1) }}</h5>
                     <p class="text-secondary mb-0">Out of {{ $book->reviews_count }} reviews</p>
                 </div>
             </div>

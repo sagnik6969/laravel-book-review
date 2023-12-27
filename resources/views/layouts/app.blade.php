@@ -9,9 +9,6 @@
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <title>Book Review</title>
     <style>
-        /* * {
-            justify-content: space-between
-        } */
         .container {
             max-width: 700px
         }
@@ -22,6 +19,18 @@
 
         .flex-even {
             flex: 1;
+        }
+
+        .search-box {
+            width: 40% !important;
+            /* height: 100px; */
+            /* background: red; */
+            transition: width 600ms !important;
+        }
+
+        .search-box:hover {
+            /* transform: scaleX(1.7); */
+            width: 50% !important;
         }
     </style>
 </head>
