@@ -43,7 +43,13 @@ class BookController extends Controller
 
         // Expression 'match' is a short syntax for 'switch' that does not have 'break' or 'return'.
 
-        $books = $books->paginate();
+
+        // $books = $books->paginate();
+        // cashing books
+        $cacheKey = 'books:' . $filter . ':' . $title;
+        $books = cache()->remember($cacheKey, 3600, fn() => $books->paginate());
+        // if the key does not exist in the cache then the arrow function will be called 
+        // and the result will be stored in the cache
 
         return view('index', [
             'books' => $books
@@ -71,12 +77,17 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        $book->load([
+        $cacheKey = 'book:' . $book->id;
+
+        // caching the review list for every book
+        $book = cache()->remember($cacheKey, 3600, fn() => $book->load([
             'reviews' => function ($query) {
                 $query->latest();
             }
             // load reviews with specific filters
-        ]);
+            // $book->load() => also returns the new book object
+        ]));
+        ;
         return view('show', [
             'book' => $book
         ]);
