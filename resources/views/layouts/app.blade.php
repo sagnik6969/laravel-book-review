@@ -28,7 +28,7 @@
             transition: width 600ms !important;
         }
 
-        .search-box:hover {
+        .search-box:focus {
             /* transform: scaleX(1.7); */
             width: 50% !important;
         }

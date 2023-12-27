@@ -7,7 +7,13 @@
     <h5 class="text-secondary">
         By {{ $book->author }}
     </h5>
-    <p class="mt-3">
+    <div class="mt-4">
+        <x-star-rating :rating="$book->reviews_avg_rating" />
+    </div>
+
+    {{-- {{  }} --}}
+    {{-- <x-star-rating /> is a custom component --}}
+    <p class="mt-1">
         <span class="font-weight-bold">
             {{ count($book->reviews) }}</span> reviews
     </p>
@@ -19,8 +25,8 @@
         @foreach ($book->reviews as $review)
             <div class="card mt-2">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <h5 class="card-title">{{ $review->rating }}</h5>
+                    <div class="d-flex mb-2 justify-content-between align-items-center">
+                        <x-star-rating :rating="$review->rating" />
                         <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
                     </div>
                     <p class="card-text">{{ $review->review }}</p>

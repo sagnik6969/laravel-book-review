@@ -79,6 +79,10 @@ class BookController extends Controller
     {
         $cacheKey = 'book:' . $book->id;
 
+        $book->loadAvg('reviews', 'rating');
+
+        // echo $book;
+
         // caching the review list for every book
         $book = cache()->remember($cacheKey, 3600, fn() => $book->load([
             'reviews' => function ($query) {

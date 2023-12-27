@@ -50,8 +50,10 @@
                     </a>
                     <h6 class="card-subtitle mb-2 text-muted">By {{ $book->author }}</h6>
                 </div>
-                <div>
-                    <h5 class="mb-0">{{ number_format($book->reviews_avg_rating, 1) }}</h5>
+                <div class="text-center">
+                    {{-- <h5 class="mb-0">{{ number_format($book->reviews_avg_rating, 1) }}</h5> --}}
+                    <x-star-rating :rating="$book->reviews_avg_rating" />
+
                     <p class="text-secondary mb-0">Out of {{ $book->reviews_count }} reviews</p>
                 </div>
             </div>
