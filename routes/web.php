@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,12 +24,18 @@ Route::get('/', function () {
 });
 
 
-Route::resource('/books', BookController::class);
-// to use BookController
+Route::resource('books', BookController::class)
+    ->only(['index', 'show']);
+// all routes except index and show will be disabled
 
-// cashing
-// redis => example of cash server
-// we can retrieve data using key
-// to configure where cash is stored config/cache.php
-// default cash driver is file. => store cache in files 
-// recommended is memcache or redis => store data in cache servers
+// to use a scoped resource controller
+Route::resource('books.reviews', ReviewController::class)
+    ->scoped(['reviews' => 'book']) //reviews belongs to a particular book 
+    ->only(['create', 'store']);
+
+// the part of url comes after  books/{book} will be managed by ReviewController
+
+// The scoped method is used to indicate that the reviews resource is scoped 
+// within a specific book. This typically implies that the reviews are associated 
+// with a particular book, and the routing should reflect this hierarchical 
+// relationship.

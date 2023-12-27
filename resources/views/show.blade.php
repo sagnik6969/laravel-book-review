@@ -7,16 +7,17 @@
     <h5 class="text-secondary">
         By {{ $book->author }}
     </h5>
-    <div class="mt-4">
+    <div class="mt-3">
         <x-star-rating :rating="$book->reviews_avg_rating" />
     </div>
 
-    {{-- {{  }} --}}
-    {{-- <x-star-rating /> is a custom component --}}
-    <p class="mt-1">
+    <p class="mt-2 mb-0">
         <span class="font-weight-bold">
             {{ count($book->reviews) }}</span> reviews
     </p>
+
+    <a class="btn btn-primary d-inline-block mb-2 mt-2" href="{{ route('books.reviews.create', ['book' => $book]) }}">Add a
+        review</a>
 
     <h3>
         Reviews
