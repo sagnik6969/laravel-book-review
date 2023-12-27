@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 // php artisan make:controller BookController --resource => this command is used to create this file
@@ -68,9 +69,17 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Book $book)
     {
-        //
+        $book->load([
+            'reviews' => function ($query) {
+                $query->latest();
+            }
+            // load reviews with specific filters
+        ]);
+        return view('show', [
+            'book' => $book
+        ]);
     }
 
     /**
