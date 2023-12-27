@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('throttle:reviews')->only(['store']);
+        // rate limiter for store
+        // reviews is defined in app/providers/RouteServiceProvider.php
+    }
     /**
      * Display a listing of the resource.
      */
